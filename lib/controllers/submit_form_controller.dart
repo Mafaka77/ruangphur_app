@@ -24,11 +24,11 @@ class SubmitFormController extends GetxController {
   var chhungte_hming = TextEditingController();
   var dob = TextEditingController();
   var gender = ''.obs;
-  var district = ''.obs;
+  var districtId = ''.obs;
   var districtText = ''.obs;
   var selectedDistrict = Rxn<DistrictModel>();
   var vengKhua = TextEditingController();
-  var constituency = ''.obs;
+  var constituencyId = ''.obs;
   var constituencyText = ''.obs;
   var selectedConstituency = Rxn<ConstituencyModel>();
   var deathDateTime = TextEditingController();
@@ -80,6 +80,24 @@ class SubmitFormController extends GetxController {
     getRate();
     // TODO: implement onInit
     super.onInit();
+    getRate();
+  }
+
+  void getRate() async {
+    try {
+      var response = await services.getRate();
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 200) {
+          var data = response.data['data'];
+          rate.value = data['rate'];
+          print('Rate: ${rate.value}');
+        } else {}
+      } else {
+        // showError('Error Occured');
+      }
+    } catch (ex) {
+      // showError('Error Occured');
+    }
   }
 
   void startTimer() {
@@ -95,11 +113,11 @@ class SubmitFormController extends GetxController {
     });
   }
 
-  void getRate() async {
-    var response = await services.getRate();
-    rate.value = response['data']['rate'];
-    print(rate);
-  }
+  // void getRate() async {
+  //   var response = await services.getRate();
+  //   rate.value = response['data']['rate'];
+  //   print(rate);
+  // }
 
   Future getDistrict(String filter) async {
     var response = await services.getDistrict(filter);
@@ -107,7 +125,7 @@ class SubmitFormController extends GetxController {
   }
 
   Future getConstituency(String filter) async {
-    var response = await services.getConstituency(filter, district.value);
+    var response = await services.getConstituency(filter, districtId.value);
     return response;
   }
 
@@ -207,7 +225,7 @@ class SubmitFormController extends GetxController {
         onError('Error');
       }
     } catch (ex) {
-      onError('Erro');
+      onError('Error');
     }
   }
 
@@ -259,9 +277,9 @@ class SubmitFormController extends GetxController {
         'relative_name': chhungte_hming.text,
         'dob': dob.text,
         'gender': gender.value,
-        'district_id': district.value,
+        'district_id': districtId.value,
         'locality': vengKhua.text,
-        'constituency_id': constituency.value,
+        'constituency_id': constituencyId.value,
         'death_time': deathDateTime.text,
         'place_of_death': placeOfDeath.text,
       },

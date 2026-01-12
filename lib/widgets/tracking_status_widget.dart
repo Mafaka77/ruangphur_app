@@ -62,192 +62,206 @@ class TrackingStatusWidget extends GetView<TrackingController> {
             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
           ),
           Obx(
-            () => Stepper(
-              physics: const NeverScrollableScrollPhysics(),
-              currentStep: controller.currentStep.value,
-              controlsBuilder: (context, details) {
-                return Container();
-              },
-              stepIconBuilder: (stepIndex, stepState) {
-                return Image(
-                  image: stepState == StepState.complete
-                      ? const AssetImage('images/active_step.png')
-                      : const AssetImage('images/inactive_step.png'),
-                  color: stepState == StepState.complete
-                      ? Colors.green
-                      : Colors.white,
-                );
-              },
-              steps: [
-                Step(
-                  stepStyle: const StepStyle(
-                    indexStyle: TextStyle(fontSize: 0),
-                    color: Colors.white,
-                  ),
-                  title: const Text("Form Submitted"),
-                  content: Container(),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        "I ruang phurh dilna chu thehluh fel a ni tawh e, District lama thuneitu ten verify turin a thang mek",
+            () => controller.trackingData['status'] == 'Rejected'
+                ? Text('Application Rejected')
+                : Stepper(
+                    physics: const NeverScrollableScrollPhysics(),
+                    currentStep: controller.currentStep.value,
+                    controlsBuilder: (context, details) {
+                      return Container();
+                    },
+                    stepIconBuilder: (stepIndex, stepState) {
+                      return Image(
+                        image: stepState == StepState.complete
+                            ? const AssetImage('images/active_step.png')
+                            : const AssetImage('images/inactive_step.png'),
+                        color: stepState == StepState.complete
+                            ? Colors.green
+                            : Colors.white,
+                      );
+                    },
+                    steps: [
+                      Step(
+                        stepStyle: const StepStyle(
+                          indexStyle: TextStyle(fontSize: 0),
+                          color: Colors.white,
+                        ),
+                        title: const Text("Form Submitted"),
+                        content: Container(),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "I ruang phurh dilna chu thehluh fel a ni tawh e, District lama thuneitu ten verify turin a thang mek",
+                            ),
+                            Wrap(
+                              children: [
+                                Text(
+                                  DateFormat('yyyy-MM-dd').format(
+                                    DateTime.parse(
+                                      controller.trackingData['createdAt'],
+                                    ), // Convert String to DateTime
+                                  ),
+                                  style: const TextStyle(color: Colors.green),
+                                ),
+                                const Text('   |   '),
+                                Text(
+                                  DateFormat('hh:mm a').format(
+                                    DateTime.parse(
+                                      controller.trackingData['createdAt'],
+                                    ), // Convert String to DateTime
+                                  ),
+                                  style: const TextStyle(color: Colors.green),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                        isActive: controller.currentStep.value == 0,
+                        state: controller.currentStep.value >= 0
+                            ? StepState.complete
+                            : StepState.indexed,
                       ),
-                      Wrap(
-                        children: [
-                          Text(
-                            DateFormat('yyyy-MM-dd').format(
-                              DateTime.parse(
-                                controller.trackingData['createdAt'],
-                              ), // Convert String to DateTime
-                            ),
-                            style: const TextStyle(color: Colors.green),
-                          ),
-                          const Text('   |   '),
-                          Text(
-                            DateFormat('hh:mm a').format(
-                              DateTime.parse(
-                                controller.trackingData['createdAt'],
-                              ), // Convert String to DateTime
-                            ),
-                            style: const TextStyle(color: Colors.green),
-                          ),
-                        ],
+                      Step(
+                        title: const Text("Verified"),
+                        stepStyle: const StepStyle(
+                          indexStyle: TextStyle(fontSize: 0),
+                          color: Colors.white,
+                        ),
+                        content: Container(),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                                "District thuneitu te atangin verify a ni a, Directorate lamah thawn a ni."),
+                            controller.trackingData['verified_at'] == null
+                                ? Container()
+                                : Wrap(
+                                    children: [
+                                      Text(
+                                        DateFormat('yyyy-MM-dd').format(
+                                          DateTime.parse(
+                                            controller
+                                                .trackingData['verified_at'],
+                                          ), // Convert String to DateTime
+                                        ),
+                                        style: const TextStyle(
+                                            color: Colors.green),
+                                      ),
+                                      const Text('   |   '),
+                                      Text(
+                                        DateFormat('hh:mm a').format(
+                                          DateTime.parse(
+                                            controller
+                                                .trackingData['verified_at'],
+                                          ), // Convert String to DateTime
+                                        ),
+                                        style: const TextStyle(
+                                            color: Colors.green),
+                                      ),
+                                    ],
+                                  ),
+                          ],
+                        ),
+                        isActive: controller.currentStep.value == 1,
+                        state: controller.currentStep.value >= 1
+                            ? StepState.complete
+                            : StepState.indexed,
+                      ),
+                      Step(
+                        title: const Text("Application under process"),
+                        stepStyle: const StepStyle(
+                          indexStyle: TextStyle(fontSize: 0),
+                          color: Colors.white,
+                        ),
+                        content: Container(),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                                "Directorate kutah a awm mek a, bank lama deposit turin file tih kal a ni."),
+                            controller.trackingData['approved_at'] == null
+                                ? Container()
+                                : Wrap(
+                                    children: [
+                                      Text(
+                                        DateFormat('yyyy-MM-dd').format(
+                                          DateTime.parse(
+                                            controller
+                                                .trackingData['approved_at'],
+                                          ), // Convert String to DateTime
+                                        ),
+                                        style: const TextStyle(
+                                            color: Colors.green),
+                                      ),
+                                      const Text('   |   '),
+                                      Text(
+                                        DateFormat('hh:mm a').format(
+                                          DateTime.parse(
+                                            controller
+                                                .trackingData['approved_at'],
+                                          ), // Convert String to DateTime
+                                        ),
+                                        style: const TextStyle(
+                                            color: Colors.green),
+                                      ),
+                                    ],
+                                  ),
+                          ],
+                        ),
+                        isActive: controller.currentStep.value == 2,
+                        state: controller.currentStep.value >= 2
+                            ? StepState.complete
+                            : StepState.indexed,
+                      ),
+                      Step(
+                        title: const Text("Bill in Process"),
+                        stepStyle: const StepStyle(
+                          indexStyle: TextStyle(fontSize: 0),
+                          color: Colors.white,
+                        ),
+                        content: Container(),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                                "I ruang phurh dilna chu bank lamah process mek a ni."),
+                            controller.trackingData['processed_at'] == null
+                                ? Container()
+                                : Wrap(
+                                    children: [
+                                      Text(
+                                        DateFormat('yyyy-MM-dd').format(
+                                          DateTime.parse(
+                                            controller
+                                                .trackingData['processed_at'],
+                                          ), // Convert String to DateTime
+                                        ),
+                                        style: const TextStyle(
+                                            color: Colors.green),
+                                      ),
+                                      const Text('   |   '),
+                                      Text(
+                                        DateFormat('hh:mm a').format(
+                                          DateTime.parse(
+                                            controller
+                                                .trackingData['processed_at'],
+                                          ), // Convert String to DateTime
+                                        ),
+                                        style: const TextStyle(
+                                            color: Colors.green),
+                                      ),
+                                    ],
+                                  ),
+                          ],
+                        ),
+                        isActive: controller.currentStep.value == 3,
+                        state: controller.currentStep.value >= 3
+                            ? StepState.complete
+                            : StepState.indexed,
                       ),
                     ],
                   ),
-                  isActive: controller.currentStep.value == 0,
-                  state: controller.currentStep.value >= 0
-                      ? StepState.complete
-                      : StepState.indexed,
-                ),
-                Step(
-                  title: const Text("Verified"),
-                  stepStyle: const StepStyle(
-                    indexStyle: TextStyle(fontSize: 0),
-                    color: Colors.white,
-                  ),
-                  content: Container(),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                          "District thuneitu te atangin verify a ni a, Directorate lamah thawn a ni."),
-                      controller.trackingData['verified_at'] == null
-                          ? Container()
-                          : Wrap(
-                              children: [
-                                Text(
-                                  DateFormat('yyyy-MM-dd').format(
-                                    DateTime.parse(
-                                      controller.trackingData['verified_at'],
-                                    ), // Convert String to DateTime
-                                  ),
-                                  style: const TextStyle(color: Colors.green),
-                                ),
-                                const Text('   |   '),
-                                Text(
-                                  DateFormat('hh:mm a').format(
-                                    DateTime.parse(
-                                      controller.trackingData['verified_at'],
-                                    ), // Convert String to DateTime
-                                  ),
-                                  style: const TextStyle(color: Colors.green),
-                                ),
-                              ],
-                            ),
-                    ],
-                  ),
-                  isActive: controller.currentStep.value == 1,
-                  state: controller.currentStep.value >= 1
-                      ? StepState.complete
-                      : StepState.indexed,
-                ),
-                Step(
-                  title: const Text("Application under process"),
-                  stepStyle: const StepStyle(
-                    indexStyle: TextStyle(fontSize: 0),
-                    color: Colors.white,
-                  ),
-                  content: Container(),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                          "Directorate kutah a awm mek a, bank lama deposit turin file tih kal a ni."),
-                      controller.trackingData['approved_at'] == null
-                          ? Container()
-                          : Wrap(
-                              children: [
-                                Text(
-                                  DateFormat('yyyy-MM-dd').format(
-                                    DateTime.parse(
-                                      controller.trackingData['approved_at'],
-                                    ), // Convert String to DateTime
-                                  ),
-                                  style: const TextStyle(color: Colors.green),
-                                ),
-                                const Text('   |   '),
-                                Text(
-                                  DateFormat('hh:mm a').format(
-                                    DateTime.parse(
-                                      controller.trackingData['approved_at'],
-                                    ), // Convert String to DateTime
-                                  ),
-                                  style: const TextStyle(color: Colors.green),
-                                ),
-                              ],
-                            ),
-                    ],
-                  ),
-                  isActive: controller.currentStep.value == 2,
-                  state: controller.currentStep.value >= 2
-                      ? StepState.complete
-                      : StepState.indexed,
-                ),
-                Step(
-                  title: const Text("Bill in Process"),
-                  stepStyle: const StepStyle(
-                    indexStyle: TextStyle(fontSize: 0),
-                    color: Colors.white,
-                  ),
-                  content: Container(),
-                  subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                          "I ruang phurh dilna chu bank lamah process mek a ni."),
-                      controller.trackingData['processed_at'] == null
-                          ? Container()
-                          : Wrap(
-                              children: [
-                                Text(
-                                  DateFormat('yyyy-MM-dd').format(
-                                    DateTime.parse(
-                                      controller.trackingData['processed_at'],
-                                    ), // Convert String to DateTime
-                                  ),
-                                  style: const TextStyle(color: Colors.green),
-                                ),
-                                const Text('   |   '),
-                                Text(
-                                  DateFormat('hh:mm a').format(
-                                    DateTime.parse(
-                                      controller.trackingData['processed_at'],
-                                    ), // Convert String to DateTime
-                                  ),
-                                  style: const TextStyle(color: Colors.green),
-                                ),
-                              ],
-                            ),
-                    ],
-                  ),
-                  isActive: controller.currentStep.value == 3,
-                  state: controller.currentStep.value >= 3
-                      ? StepState.complete
-                      : StepState.indexed,
-                ),
-              ],
-            ),
           ),
         ],
       ),

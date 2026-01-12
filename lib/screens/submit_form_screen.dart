@@ -15,45 +15,46 @@ class SubmitFormScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<SubmitFormController>(
-        init: SubmitFormController(),
-        builder: (controller) {
-          return Scaffold(
-            // resizeToAvoidBottomInset: false,
-            appBar: myAppBar(),
-            body: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    color: MyColors.stepperBackgroundColor,
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Ruang Phur Report Form',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        sizedBoxHeight(10),
-                        const StepperWidget(),
-                      ],
-                    ),
+      init: SubmitFormController(),
+      builder: (controller) {
+        return Scaffold(
+          // resizeToAvoidBottomInset: false,
+          appBar: myAppBar(),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                Container(
+                  color: MyColors.stepperBackgroundColor,
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // const Text(
+                      //   'Ruang Phur Report Form',
+                      //   style: TextStyle(
+                      //     fontSize: 18,
+                      //     fontWeight: FontWeight.bold,
+                      //   ),
+                      // ),
+                      // sizedBoxHeight(10),
+                      const StepperWidget(),
+                    ],
                   ),
-                  Obx(
-                    () => controller.activeStep.value == 0
-                        ? const FirstStepWidget()
-                        : controller.activeStep.value == 1
-                            ? const SecondStepWidget()
-                            : controller.activeStep.value == 2
-                                ? const ThirdStepWidget()
-                                : Container(),
-                  ),
-                ],
-              ),
+                ),
+                Obx(
+                  () => controller.activeStep.value == 0
+                      ? const FirstStepWidget()
+                      : controller.activeStep.value == 1
+                      ? const SecondStepWidget()
+                      : controller.activeStep.value == 2
+                      ? const ThirdStepWidget()
+                      : Container(),
+                ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

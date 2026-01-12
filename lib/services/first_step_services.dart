@@ -14,7 +14,7 @@ class FirstStepServices extends BaseService {
   Future getRate() async {
     try {
       var response = await client.get(Routes.GET_RATE);
-      return response.data;
+      return response;
     } catch (ex) {
       return Future.error(ex);
     }
@@ -97,6 +97,7 @@ class FirstStepServices extends BaseService {
       var response = await client.post(Routes.SEND_OTP, data: {
         'mobile': phone,
       });
+      // print(response);
       return response;
     } catch (ex) {
       return Future.error(ex);

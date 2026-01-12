@@ -406,6 +406,7 @@ class ViewApplicationScreen extends GetView<TrackingController> {
                               'Mitthi Aadhaar/Voter ID/Birth Certificate'),
                           trailing: IconButton(
                               onPressed: () {
+                                print(data.attachment.idProof);
                                 downloadFile(context, data.attachment.idProof);
                               },
                               icon: const Icon(Icons.download)),

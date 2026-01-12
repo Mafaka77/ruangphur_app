@@ -38,6 +38,9 @@ class TrackingController extends GetxController {
         } else if (response.data['status'] == 404) {
           isSuccess.value = false;
           onError(response.data['message']);
+        } else if (response.data['status'] == 404) {
+          isSuccess.value = false;
+          onError('Tracking ID not found');
         }
       } else {
         isSuccess.value = false;

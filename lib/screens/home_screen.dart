@@ -35,13 +35,13 @@ class HomeScreen extends StatelessWidget {
                             'Chibai! In chhiattawh naah Mizoram Sorkar a awm e.',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              fontSize: 27,
+                              fontSize: 23,
                             ),
                           ),
                           Text(
                             'Mitthi ruang chu i duhna taka phur thleng turin dilna document dik tak upload turin ngen leh hriattir i ni e.',
                             style: TextStyle(
-                              fontSize: 18,
+                              fontSize: 16,
                               color: MyColors.lightBlack,
                             ),
                           ),
@@ -68,12 +68,12 @@ class HomeScreen extends StatelessWidget {
                       child: Text('An initiative of'),
                     ),
                     const Center(
-                      child: Text(
-                          'Department of Social Welfare & Tribal Affairs and WCD,'),
+                      child: Text('Directorate of Social Welfare,'),
                     ),
                     const Center(
                       child: Text('Government of Mizoram'),
-                    )
+                    ),
+                    sizedBoxHeight(20)
                   ],
                 ),
               ),

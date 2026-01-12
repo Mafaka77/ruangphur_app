@@ -20,7 +20,7 @@ class HomeController extends GetxController {
     isLoading.value = true;
     faqList.clear();
     try {
-      var response = await services.getFaq(0, 5);
+      var response = await services.getFaq(0, 10);
       faqList.addAll(response);
       isLoading.value = false;
     } catch (ex) {

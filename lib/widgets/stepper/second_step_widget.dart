@@ -67,6 +67,7 @@ class SecondStepWidget extends GetView<SubmitFormController> {
                 decoration: InputDecoration(
                   isDense: true,
                   labelText: 'Ruang phurh tanna tur District',
+                  labelStyle: TextStyle(fontSize: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
@@ -96,7 +97,7 @@ class SecondStepWidget extends GetView<SubmitFormController> {
                 controller: controller.startingAddress,
                 decoration: textFieldDecoration(
                     'Ruang chhuahna veng/khua thlanna',
-                    const Icon(Icons.map),
+                    const Icon(Icons.location_on_outlined),
                     ''),
               ),
             ),
@@ -158,7 +159,7 @@ class SecondStepWidget extends GetView<SubmitFormController> {
                 controller: controller.destinationAddress,
                 decoration: textFieldDecoration(
                     'Ruang zalhna tur veng/khua thlanna',
-                    const Icon(Icons.map),
+                    const Icon(Icons.location_on_outlined),
                     ''),
               ),
             ),

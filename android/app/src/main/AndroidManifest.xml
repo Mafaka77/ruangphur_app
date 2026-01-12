@@ -1,13 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <application
-        android:label="ruang_phur"
+        android:label="Ruangphur"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
-         <meta-data 
+        android:icon="@mipmap/launcher_icon">
+        <meta-data 
                android:name="com.google.android.geo.API_KEY"
-               android:value="AIzaSyBaVam14iiWqOUY152i_UHbmhKiowB11-A"
+               android:value="AIzaSyAIuhdnsIP57XET16ktVr-HPVLpeWXKOxk"
         />
         <activity
             android:name=".MainActivity"

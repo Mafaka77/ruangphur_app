@@ -19,4 +19,6 @@ class Routes {
   static String GET_FAQ(int limit) => '${BASE_URL}get-faq/$limit';
   static String GET_ALL_INFORMATION = '${BASE_URL}get-information';
   static String GET_RATE = '${BASE_URL}get-rate';
+  static String VIEW_APPLICATION(String trackingId) =>
+      '${BASE_URL}view-application/$trackingId';
 }

@@ -13,10 +13,10 @@ class FaqModel {
 
   factory FaqModel.fromJson(Map<String, dynamic> json) {
     return FaqModel(
-      id: json["_id"],
-      question: json["question"],
-      answer: json["answer"],
-      v: json["__v"],
+      id: json['_id'] as String,
+      question: json['question'] as String,
+      answer: json['answer'] as String,
+      v: json['__v'] as int,
     );
   }
 

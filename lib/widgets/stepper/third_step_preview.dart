@@ -127,11 +127,11 @@ thirdStepPreview(BuildContext context, SubmitFormController controller) {
                   color: Colors.black,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20, top: 20),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
+                      Wrap(
                         children: [
                           const Icon(size: 20, Icons.check_circle_sharp),
                           sizedBoxWidth(5),
@@ -176,9 +176,9 @@ thirdStepPreview(BuildContext context, SubmitFormController controller) {
                                 value ?? false;
                           }),
                     ),
-                    const Flexible(
+                    Flexible(
                       child: Text(
-                          'Kei Zorampianga Fanai hian heng dilna leh document upload-te hi thu diktak a ni tih ka nemnghet e, engmah thil dik lo a awm lo e.'),
+                          'Kei ${controller.diltuHming.text} hian heng dilna leh document upload-te hi thu diktak a ni tih ka nemnghet e, engmah thil dik lo a awm lo e.'),
                     )
                   ],
                 ),

@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Ruangphur',
       theme: ThemeData(
         textTheme: TextTheme(
           headlineSmall: GoogleFonts.notoSans(

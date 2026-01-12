@@ -130,7 +130,9 @@ class FirstStepWidget extends GetView<SubmitFormController> {
                   return null;
                 },
                 items: (f, cs) => ["Male", 'Female'],
-                selectedItem: controller.gender.value,
+                selectedItem: controller.gender.value.isEmpty
+                    ? null
+                    : controller.gender.value,
                 popupProps: PopupProps.menu(
                     disabledItemFn: (item) => item == 'Item 3',
                     fit: FlexFit.loose),
@@ -138,7 +140,7 @@ class FirstStepWidget extends GetView<SubmitFormController> {
                   decoration: InputDecoration(
                     isDense: true,
                     hintText: 'Gender',
-                    labelText: 'Gender',
+                    hintStyle: TextStyle(fontSize: 14),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -164,6 +166,7 @@ class FirstStepWidget extends GetView<SubmitFormController> {
                   decoration: InputDecoration(
                     isDense: true,
                     labelText: 'Ruang zalhna tur District',
+                    labelStyle: TextStyle(fontSize: 14),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -171,9 +174,40 @@ class FirstStepWidget extends GetView<SubmitFormController> {
                 ),
                 onChanged: (value) {
                   controller.districtText.value = value!.name!;
-                  controller.district.value = value.id!;
+                  controller.districtId.value = value.id!;
                   controller.selectedDistrict.value = value;
                 },
+              ),
+              sizedBoxHeight(10),
+              Obx(
+                () => DropdownSearch<ConstituencyModel>(
+                  enabled: controller.districtText.isEmpty ? false : true,
+                  validator: (value) {
+                    if (value == null) {
+                      return 'Required';
+                    }
+                    return null;
+                  },
+                  items: (f, cs) async => await controller.getConstituency(f),
+                  compareFn: (item1, item2) => item1.isEqual(item2),
+                  selectedItem: controller.selectedConstituency.value,
+                  popupProps: const PopupProps.menu(fit: FlexFit.loose),
+                  decoratorProps: DropDownDecoratorProps(
+                    decoration: InputDecoration(
+                      isDense: true,
+                      labelText: 'Assembly Constituency',
+                      labelStyle: TextStyle(fontSize: 14),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
+                  onChanged: (value) {
+                    controller.constituencyText.value = value!.name!;
+                    controller.constituencyId.value = value.id!;
+                    controller.selectedConstituency.value = value;
+                  },
+                ),
               ),
               sizedBoxHeight(10),
               TextFormField(
@@ -185,33 +219,6 @@ class FirstStepWidget extends GetView<SubmitFormController> {
                 },
                 controller: controller.vengKhua,
                 decoration: textFieldDecoration('Veng/Khua', null, ''),
-              ),
-              sizedBoxHeight(10),
-              DropdownSearch<ConstituencyModel>(
-                validator: (value) {
-                  if (value == null) {
-                    return 'Required';
-                  }
-                  return null;
-                },
-                items: (f, cs) async => await controller.getConstituency(f),
-                compareFn: (item1, item2) => item1.isEqual(item2),
-                selectedItem: controller.selectedConstituency.value,
-                popupProps: const PopupProps.menu(fit: FlexFit.loose),
-                decoratorProps: DropDownDecoratorProps(
-                  decoration: InputDecoration(
-                    isDense: true,
-                    labelText: 'Assembly Constituency',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                onChanged: (value) {
-                  controller.constituencyText.value = value!.name!;
-                  controller.constituency.value = value.id!;
-                  controller.selectedConstituency.value = value;
-                },
               ),
               sizedBoxHeight(10),
               TextFormField(
@@ -287,7 +294,8 @@ class FirstStepWidget extends GetView<SubmitFormController> {
                     ),
                   ),
                 ],
-              )
+              ),
+              sizedBoxHeight(30),
             ],
           ),
         ),

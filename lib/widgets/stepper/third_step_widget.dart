@@ -67,6 +67,7 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
                 decoration: InputDecoration(
                   isDense: true,
                   labelText: 'Ruang phurh diltu District hming',
+                  labelStyle: TextStyle(fontSize: 14),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),

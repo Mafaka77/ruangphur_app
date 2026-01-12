@@ -49,10 +49,14 @@ class TrackingScreen extends StatelessWidget {
                         ),
                         TextFormField(
                           controller: controller.trackingId,
+                          keyboardType: TextInputType.number,
+                          maxLength: 6,
                           decoration: textFieldDecoration(
                             '',
                             null,
-                            'I dilna thlen chin zawhna',
+                            '0 0 0 0 0 0',
+                          ).copyWith(
+                            prefixText: 'SW-RP ',
                           ),
                           inputFormatters: [
                             UpperCaseTextFormatter(),

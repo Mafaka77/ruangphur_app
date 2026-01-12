@@ -1,6 +1,6 @@
 {
-    "name": "ruang_phur",
-    "short_name": "ruang_phur",
+    "name": "ruangphur_app",
+    "short_name": "ruangphur_app",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -71,6 +71,9 @@ class DrawerScreen extends GetView<HomeController> {
                 ),
                 sizedBoxHeight(10),
                 ListTile(
+                  onTap: () {
+                    Get.toNamed('/about-us-screen');
+                  },
                   dense: true,
                   tileColor: MyColors.stepperBackgroundColor,
                   title: const Text('About Us'),

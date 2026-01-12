@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:ruang_phur/screens/about_us_screen.dart';
 import 'package:ruang_phur/screens/download_screen.dart';
 import 'package:ruang_phur/screens/drawer_screen.dart';
 import 'package:ruang_phur/screens/faq_screen.dart';
@@ -56,6 +57,10 @@ final getPages = [
       GetPage(
         name: '/terms-screen',
         page: () => const TermsScreen(),
+      ),
+      GetPage(
+        name: '/about-us-screen',
+        page: () => const AboutUsScreen(),
       ),
     ],
   ),

@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen>
               fit: BoxFit.contain,
               image: AssetImage('images/swta_logo.png'),
             ),
-            Text('Social Welfare & Tribal Affairs and WCD'),
+            Text('Directorate of Social Welfare'),
             Text('Government of Mizoram')
           ],
         ),
