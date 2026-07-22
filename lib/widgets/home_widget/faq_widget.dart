@@ -15,23 +15,15 @@ class FaqWidget extends GetView<HomeController> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Ruang Phur chungchang a zawhna leh chhana',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            'Ruangphur chungchang a zawhna leh chhana',
+            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           sizedBoxHeight(20),
-          const Text(
-            'FAQs',
-            style: TextStyle(fontSize: 18),
-          ),
+          const Text('FAQs', style: TextStyle(fontSize: 16)),
           sizedBoxHeight(10),
           Obx(
             () => ListView.separated(
-              separatorBuilder: (context, index) => const SizedBox(
-                height: 10,
-              ),
+              separatorBuilder: (context, index) => const SizedBox(height: 10),
               itemCount: controller.faqList.length,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
@@ -41,21 +33,18 @@ class FaqWidget extends GetView<HomeController> {
                   backgroundColor: Colors.white,
                   dense: true,
                   maintainState: true,
-                  childrenPadding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                  childrenPadding: const EdgeInsets.symmetric(
+                    vertical: 10,
+                    horizontal: 20,
+                  ),
                   shape: const RoundedRectangleBorder(),
                   collapsedBackgroundColor: Colors.white,
                   title: Text(data.question),
-                  children: [
-                    AutoSizeText(
-                      data.answer,
-                      maxLines: 10,
-                    ),
-                  ],
+                  children: [AutoSizeText(data.answer, maxLines: 10)],
                 );
               },
             ),
-          )
+          ),
         ],
       ),
     );

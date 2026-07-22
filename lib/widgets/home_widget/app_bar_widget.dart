@@ -7,9 +7,7 @@ class AppBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      leading: const Image(
-        image: AssetImage('images/logov2.png'),
-      ),
+      // leading: const Image(image: AssetImage('/images/logov3.jpg')),
       leadingWidth: 120,
       actions: [
         IconButton(

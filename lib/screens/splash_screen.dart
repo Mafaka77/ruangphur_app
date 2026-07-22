@@ -15,8 +15,10 @@ class _SplashScreenState extends State<SplashScreen>
   late AnimationController _animationController;
   @override
   void initState() {
-    _animationController =
-        AnimationController(vsync: this, duration: const Duration(seconds: 1));
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    );
     _animationController.repeat(reverse: true);
     Timer(const Duration(seconds: 3), () => toRoutes());
 
@@ -38,17 +40,17 @@ class _SplashScreenState extends State<SplashScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: const Padding(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.symmetric(vertical: 20, horizontal: 40),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Image(
-              height: 80, // Ensure proper image sizing
+              height: 60, // Ensure proper image sizing
               fit: BoxFit.contain,
-              image: AssetImage('images/swta_logo.png'),
+              image: AssetImage('images/sw_logov1.png'),
             ),
             Text('Directorate of Social Welfare'),
-            Text('Government of Mizoram')
+            Text('Government of Mizoram'),
           ],
         ),
       ),

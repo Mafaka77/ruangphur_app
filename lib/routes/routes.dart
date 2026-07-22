@@ -1,6 +1,6 @@
 class Routes {
   static String BASE_URL = 'https://ruangphur.swta.msegs.in/api/';
-  // static String BASE_URL = 'http://localhost:5001/api/';
+  // static String BASE_URL = 'http://192.168.0.221:5001/api/';
   static String DOWNLOAD_URL(String fileName) =>
       'https://ruangphur.swta.msegs.in$fileName';
 
@@ -19,6 +19,7 @@ class Routes {
   static String GET_FAQ(int limit) => '${BASE_URL}get-faq/$limit';
   static String GET_ALL_INFORMATION = '${BASE_URL}get-information';
   static String GET_RATE = '${BASE_URL}get-rate';
+  static String GET_BOAT_ROUTES = '${BASE_URL}get-boat-routes';
   static String VIEW_APPLICATION(String trackingId) =>
       '${BASE_URL}view-application/$trackingId';
 }

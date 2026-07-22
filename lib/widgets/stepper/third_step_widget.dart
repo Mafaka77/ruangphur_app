@@ -12,6 +12,7 @@ import 'package:ruang_phur/constant/uppertext_formatter.dart';
 import 'package:ruang_phur/controllers/submit_form_controller.dart';
 import 'package:ruang_phur/models/district_model.dart';
 import 'package:ruang_phur/widgets/stepper/third_step_preview.dart';
+import 'package:ruang_phur/constant/upload_bank_front.dart';
 
 class ThirdStepWidget extends GetView<SubmitFormController> {
   const ThirdStepWidget({super.key});
@@ -28,11 +29,7 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
           children: [
             Row(
               children: [
-                Container(
-                  height: 20,
-                  width: 4,
-                  color: Colors.black,
-                ),
+                Container(height: 20, width: 4, color: Colors.black),
                 sizedBoxWidth(10),
                 const Text(
                   'Ruang Phurhna man diltu chungchang',
@@ -136,22 +133,21 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
               },
               controller: controller.diltuIFSC,
               decoration: textFieldDecoration('Diltu Bank IFSC Code', null, ''),
-              inputFormatters: [
-                UpperCaseTextFormatter(),
-              ],
+              inputFormatters: [UpperCaseTextFormatter()],
             ),
             sizedBoxHeight(10),
 
             //--------------------------------------------------------------------
             const Text('Document Upload'),
-            Container(
-              width: 20,
-              height: 5,
-              color: Colors.black,
+            Container(width: 20, height: 5, color: Colors.black),
+            sizedBoxHeight(10),
+            Text(
+              '* Mitthi hi naupang emaw aadhaar la neilo a nih chuan a chhungte aadhaar upload tur a ni.',
+              style: TextStyle(fontSize: 12),
             ),
             sizedBoxHeight(10),
             const Text(
-              'Mitthi Aadhar card/Voter ID/Birth Certificate upload',
+              'Aadhar card/Voter ID *',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextFormField(
@@ -166,12 +162,32 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
                 uploadMitthiDocument(context, controller);
               },
               readOnly: true,
-              decoration: textFieldDecoration('Mitthi document upload na',
-                  const Icon(Icons.attach_file), ''),
+              decoration: textFieldDecoration(
+                'Mitthi document upload na ',
+                const Icon(Icons.attach_file),
+                '',
+              ),
             ),
             sizedBoxHeight(10),
             const Text(
-              'Motor hman man Voucher/Receipt',
+              'Bank Passbook Front Page',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextFormField(
+              controller: controller.bankFrontUrl,
+              onTap: () {
+                uploadBankFront(context, controller);
+              },
+              readOnly: true,
+              decoration: textFieldDecoration(
+                'Bank front page pass book upload na',
+                const Icon(Icons.attach_file),
+                '',
+              ),
+            ),
+            sizedBoxHeight(10),
+            const Text(
+              'Motor hman man Voucher/Receipt *',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextFormField(
@@ -186,12 +202,15 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
                 uploadMotorReceipt(context, controller);
               },
               readOnly: true,
-              decoration: textFieldDecoration('Motor hman man Voucher/Receipt',
-                  const Icon(Icons.attach_file), ''),
+              decoration: textFieldDecoration(
+                'Motor hman man Voucher/Receipt',
+                const Icon(Icons.attach_file),
+                '',
+              ),
             ),
             sizedBoxHeight(10),
             const Text(
-              'Death certificate/VC hriatpuina lehkha',
+              'Death certificate/VC hriatpuina lehkha *',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextFormField(
@@ -206,16 +225,20 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
                 uploadDeathCertificate(context, controller);
               },
               readOnly: true,
-              decoration: textFieldDecoration('A thi a ni tih hriatpuina',
-                  const Icon(Icons.attach_file), ''),
+              decoration: textFieldDecoration(
+                'A thi a ni tih hriatpuina',
+                const Icon(Icons.attach_file),
+                '',
+              ),
             ),
             sizedBoxHeight(10),
             const Text(
-              'Death certificate emaw Declaration of death by the  Medical Officer lehkha/ Damdawiina thi lo tan Annexure 1.3 II in a sawi ang in  Authorised Officials hriatpuina lehkha thil tel tur a ni.',
+              '* Death certificate emaw Declaration of death by the  Medical Officer lehkha/ Damdawiina thi lo tan Annexure 1.3 II in a sawi ang in  Authorised Officials hriatpuina lehkha thil tel tur a ni.',
+              style: TextStyle(fontSize: 12),
             ),
             sizedBoxHeight(10),
             const Text(
-              'Diltu Aadhar card/Voter ID thlalak upload',
+              'Diltu Aadhar card/Voter ID thlalak upload * ',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextFormField(
@@ -230,8 +253,11 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
                 uploadDiltuDocument(context, controller);
               },
               readOnly: true,
-              decoration: textFieldDecoration('Diltu document upload na',
-                  const Icon(Icons.attach_file), ''),
+              decoration: textFieldDecoration(
+                'Diltu document upload na',
+                const Icon(Icons.attach_file),
+                '',
+              ),
             ),
             sizedBoxHeight(30),
             Row(
@@ -263,10 +289,7 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
                     } else {
                       mySnackBar(
                         'Please fill all required forms',
-                        const Icon(
-                          Icons.warning,
-                          color: Colors.red,
-                        ),
+                        const Icon(Icons.warning, color: Colors.red),
                       );
                     }
                   },
@@ -277,7 +300,7 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
                 ),
               ],
             ),
-            sizedBoxHeight(20),
+            sizedBoxHeight(40),
           ],
         ),
       ),
@@ -285,5 +308,7 @@ class ThirdStepWidget extends GetView<SubmitFormController> {
   }
 
   void openDiltuDocument(
-      BuildContext context, SubmitFormController controller) {}
+    BuildContext context,
+    SubmitFormController controller,
+  ) {}
 }

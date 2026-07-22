@@ -40,6 +40,9 @@ class SubmitFormController extends GetxController {
   var destinationDistrictText = ''.obs;
   var destinationDistrictId = ''.obs;
   var selectedDestinationDistrict = Rxn<DistrictModel>();
+  var garage_locality = TextEditingController();
+  var garage_lat = ''.obs;
+  var garage_lng = ''.obs;
   var startingAddress = TextEditingController();
   var startingLat = ''.obs;
   var startingLng = ''.obs;
@@ -51,6 +54,28 @@ class SubmitFormController extends GetxController {
   var motorRegistrationNo = TextEditingController();
   var motorNeitu = TextEditingController();
   var motorNeituPhone = TextEditingController();
+
+  // BOAT TRANSPORT FIELDS
+  var transportMode = 'road'.obs;
+  var waitingHours = TextEditingController();
+  var waitingCharge = 0.obs;
+  var boatSourceLocality = ''.obs;
+  var boatDestinationLocality = ''.obs;
+
+  var boatRoutes = <Map<String, dynamic>>[].obs;
+
+  List<String> getBoatSources() {
+    return boatRoutes
+        .map((r) => r['source_locality'] as String)
+        .toSet()
+        .toList();
+  }
+
+  List<Map<String, dynamic>> getBoatDestinations(String sourceLocality) {
+    return boatRoutes
+        .where((r) => r['source_locality'] == sourceLocality)
+        .toList();
+  }
 
   //THIRD STEP
   var diltuHming = TextEditingController();
@@ -70,6 +95,8 @@ class SubmitFormController extends GetxController {
   var deathCertificateUrl = TextEditingController();
   XFile? diltuDocumentFile = XFile('');
   var diltuDocumentUrl = TextEditingController();
+  XFile? bankFrontFile = XFile('');
+  var bankFrontUrl = TextEditingController();
   var declarationCheckBox = false.obs;
   var rate = ''.obs;
   //OTP SCREEN
@@ -78,9 +105,48 @@ class SubmitFormController extends GetxController {
   @override
   void onInit() {
     getRate();
-    // TODO: implement onInit
+    getBoatRoutes();
     super.onInit();
-    getRate();
+    waitingHours.addListener(_updateWaitingCharge);
+    transportMode.listen((val) {
+      _updateWaitingCharge();
+    });
+    boatSourceLocality.listen((val) {
+      startingAddress.text = val;
+    });
+    boatDestinationLocality.listen((val) {
+      destinationAddress.text = val;
+    });
+  }
+
+  void getBoatRoutes() async {
+    try {
+      var response = await services.getBoatRoutes();
+      if (response.statusCode == 200) {
+        if (response.data['status'] == 200) {
+          var data = response.data['data'] as List;
+          boatRoutes.value = data
+              .map((e) => Map<String, dynamic>.from(e))
+              .toList();
+          print('Boat routes loaded: ${boatRoutes.length}');
+        }
+      }
+    } catch (ex) {
+      print('Error fetching boat routes: $ex');
+    }
+  }
+
+  void _updateWaitingCharge() {
+    if (transportMode.value != 'boat') {
+      waitingCharge.value = 0;
+      return;
+    }
+    int hours = int.tryParse(waitingHours.text) ?? 0;
+    if (hours < 0) hours = 0;
+    int days = hours ~/ 24;
+    int remainder = hours % 24;
+    int charge = days * 1000 + (remainder >= 2 ? 500 : 0);
+    waitingCharge.value = charge;
   }
 
   void getRate() async {
@@ -135,7 +201,10 @@ class SubmitFormController extends GetxController {
   }
 
   void uploadMitthiDocumentFile(
-      Function onLoading, Function onSuccess, Function onError) async {
+    Function onLoading,
+    Function onSuccess,
+    Function onError,
+  ) async {
     onLoading();
     mitthiDocumentUrl.clear();
     try {
@@ -160,7 +229,10 @@ class SubmitFormController extends GetxController {
   }
 
   void uploadMotorReceipt(
-      Function onLoading, Function onSuccess, Function onError) async {
+    Function onLoading,
+    Function onSuccess,
+    Function onError,
+  ) async {
     onLoading();
     motorReceiptUrl.clear();
     try {
@@ -184,7 +256,10 @@ class SubmitFormController extends GetxController {
   }
 
   void uploadDeathCertificate(
-      Function onLoading, Function onSuccess, Function onError) async {
+    Function onLoading,
+    Function onSuccess,
+    Function onError,
+  ) async {
     onLoading();
     deathCertificateUrl.clear();
     try {
@@ -207,7 +282,10 @@ class SubmitFormController extends GetxController {
   }
 
   void uploadDiltuDocument(
-      Function onLoading, Function onSuccess, Function onError) async {
+    Function onLoading,
+    Function onSuccess,
+    Function onError,
+  ) async {
     onLoading();
     diltuDocumentUrl.clear();
     try {
@@ -229,47 +307,59 @@ class SubmitFormController extends GetxController {
     }
   }
 
-  void sendOtp(Function onLoading, Function onSuccess, Function onError) async {
+  void uploadBankFront(
+    Function onLoading,
+    Function onSuccess,
+    Function onError,
+  ) async {
+    onLoading();
+    bankFrontUrl.clear();
+    try {
+      var response = await services.uploadMitthiDocument(bankFrontFile);
+      var statusCode = response.statusCode;
+      if (statusCode == 200) {
+        if (response.data['status'] == 422) {
+          onError(response.data['error']);
+        } else if (response.data['status'] == 201) {
+          var data = response.data['url'];
+          bankFrontUrl.text = data;
+          onSuccess('Image uploaded');
+        }
+      } else {
+        onError('Error');
+      }
+    } catch (ex) {
+      onError('Error');
+    }
+  }
+
+  Future sendOtp() async {
     try {
       var response = await services.sendOtp(diltuPhoneNo.text);
       var statusCode = response.statusCode;
-      if (statusCode == 200) {
-        if (response.data['status'] == 200) {
-          onSuccess(response.data['message']);
-        } else if (response.data['status'] == 442) {
-          onError(response.data['message']);
-        }
-      } else {
-        onError(response.data['message']);
+      if (statusCode == 200 && response.data['status'] == 200) {
+        return {'success': true, 'message': response.data['message']};
       }
+      return {'success': false, 'message': response.data['message']};
     } catch (ex) {
-      print(ex);
-      onError(ex);
+      return {'success': false, 'message': ex};
     }
   }
 
-  void verifyOtp(Function onLoading, Function onSuccess, Function onError,
-      String otp) async {
-    onLoading();
+  Future verifyOtp(String otp) async {
     try {
       var response = await services.verifyOtp(diltuPhoneNo.text, otp);
       var statusCode = response.statusCode;
-      if (statusCode == 200) {
-        if (response.data['status'] == 200) {
-          onSuccess(response.data['message']);
-        } else if (response.data['status'] == 400) {
-          onError(response.data['message']);
-        }
-      } else {
-        onError('Error Occured');
+      if (statusCode == 200 && response.data['status'] == 200) {
+        return {"success": true, 'message': response.data['message']};
       }
+      return {"success": false, 'message': response.data['message']};
     } catch (ex) {
-      onError('Error Occured');
+      return {"success": false, "message": ex};
     }
   }
 
-  void submitForm(
-      Function onLoading, Function onSuccess, Function onError) async {
+  Future submitForm() async {
     MultiTableModel formData = MultiTableModel(
       deceaseds: {
         'name': mitthi_hming.text,
@@ -284,6 +374,16 @@ class SubmitFormController extends GetxController {
         'place_of_death': placeOfDeath.text,
       },
       transports: {
+        'transport_mode': transportMode.value,
+        'waiting_hours': transportMode.value == 'boat'
+            ? (int.tryParse(waitingHours.text) ?? 0)
+            : 0,
+        'waiting_charge': transportMode.value == 'boat'
+            ? waitingCharge.value
+            : 0,
+        'garage_locality': garage_locality.text,
+        'garage_lat': garage_lat.value,
+        'garage_lng': garage_lng.value,
         'source_district': sourceDistrictId.value,
         'source_locality': startingAddress.text,
         'destination_district': destinationDistrictId.value,
@@ -291,11 +391,13 @@ class SubmitFormController extends GetxController {
         'vehicle_no': motorRegistrationNo.text,
         'driver_name': motorNeitu.text,
         'driver_phone': motorNeituPhone.text,
-        'source_lat': startingLat.value,
-        'source_lng': startingLng.value,
-        'destination_lat': destinationLat.value,
-        'destination_lng': destinationLng.value,
-        'distance': kilometer.value,
+        if (transportMode.value == 'road') ...{
+          'source_lat': startingLat.value,
+          'source_lng': startingLng.value,
+          'destination_lat': destinationLat.value,
+          'destination_lng': destinationLng.value,
+          'distance': kilometer.value,
+        },
         'transport_cost': motorHmanMan.value,
       },
       applicants: {
@@ -310,6 +412,7 @@ class SubmitFormController extends GetxController {
         'receipt': motorReceiptUrl.text,
         'death_certificate': deathCertificateUrl.text,
         'additional_document': diltuDocumentUrl.text,
+        'bank_front': bankFrontUrl.text,
       },
     );
 
@@ -317,17 +420,19 @@ class SubmitFormController extends GetxController {
       var response = await services.submitForm(formData);
       var statusCode = response.statusCode;
 
-      if (statusCode == 200) {
-        if (response.data['status'] == 201) {
-          var applicationNo = response.data['data'];
-          onSuccess(response.data['message'], applicationNo);
-        }
-      } else {
-        onError('Error Occured');
+      if (statusCode == 200 && response.data['status'] == 201) {
+        var applicationNo = response.data['data'];
+        return {
+          'success': true,
+          'message': response.data['message'],
+          'applicationNo': applicationNo,
+        };
+        // onSuccess(response.data['message'], applicationNo);
       }
+      return {'success': false, 'message': response.data['message']};
+      // onError(response.data['message']);
     } catch (ex) {
-      print(ex);
-      onError('Error Occured');
+      return {'success': false, 'message': ex};
     }
   }
 }

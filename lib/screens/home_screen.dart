@@ -13,72 +13,68 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<HomeController>(
-        init: HomeController(),
-        builder: (controller) {
-          return Scaffold(
-            body: SafeArea(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Container(
-                      color: MyColors.stepperBackgroundColor,
-                      padding: const EdgeInsets.only(
-                          left: 20, right: 20, bottom: 40),
-                      // height: Get.height * 0.55,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const AppBarWidget(),
-                          sizedBoxHeight(30),
-                          const Text(
-                            'Chibai! In chhiattawh naah Mizoram Sorkar a awm e.',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 23,
-                            ),
+      init: HomeController(),
+      builder: (controller) {
+        return Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    color: MyColors.stepperBackgroundColor,
+                    padding: const EdgeInsets.only(
+                      left: 20,
+                      right: 20,
+                      bottom: 40,
+                    ),
+                    // height: Get.height * 0.55,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const AppBarWidget(),
+                        sizedBoxHeight(30),
+                        const Text(
+                          'Chibai! In chhiattawh naah Mizoram Sorkar a awm e.',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 23,
                           ),
-                          Text(
-                            'Mitthi ruang chu i duhna taka phur thleng turin dilna document dik tak upload turin ngen leh hriattir i ni e.',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: MyColors.lightBlack,
-                            ),
+                        ),
+                        Text(
+                          'Mitthi ruang chu i duhna taka phur thleng turin dilna document dik tak upload turin ngen leh hriattir i ni e.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: MyColors.lightBlack,
                           ),
-                          sizedBoxHeight(20),
-                          const ButtonGrid(),
-                        ],
-                      ),
+                        ),
+                        sizedBoxHeight(20),
+                        const ButtonGrid(),
+                      ],
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(20.0),
-                      child: Image(
-                        image: AssetImage('images/info.png'),
-                      ),
-                    ),
-                    const FaqWidget(),
-                    sizedBoxHeight(30),
-                    const Center(
-                      child: Image(
-                        height: 60,
-                        image: AssetImage('images/swta_logo.png'),
-                      ),
-                    ),
-                    const Center(
-                      child: Text('An initiative of'),
-                    ),
-                    const Center(
-                      child: Text('Directorate of Social Welfare,'),
-                    ),
-                    const Center(
-                      child: Text('Government of Mizoram'),
-                    ),
-                    sizedBoxHeight(20)
-                  ],
-                ),
+                  ),
+                  // const Padding(
+                  //   padding: EdgeInsets.all(20.0),
+                  //   child: Image(image: AssetImage('images/info.png')),
+                  // ),
+                  const FaqWidget(),
+                  sizedBoxHeight(30),
+                  // const Center(
+                  //   child: Image(
+                  //     height: 60,
+                  //     image: AssetImage('images/sw_logov1.png'),
+                  //   ),
+                  // ),
+                  const Center(child: Text('An initiative of')),
+                  const Center(child: Text('Directorate of Social Welfare,')),
+                  const Center(child: Text('Government of Mizoram')),
+                  sizedBoxHeight(20),
+                ],
               ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

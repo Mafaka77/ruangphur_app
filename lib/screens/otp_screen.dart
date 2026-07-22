@@ -8,10 +8,34 @@ import 'package:ruang_phur/constant/sized_box.dart';
 import 'package:ruang_phur/controllers/otp_timer_controller.dart';
 import 'package:ruang_phur/controllers/submit_form_controller.dart';
 
-class OtpScreen extends GetView<SubmitFormController> {
-  OtpScreen({super.key});
+class OtpScreen extends StatefulWidget {
+  const OtpScreen({super.key});
+
   @override
-  final OTPTimerController otpTimerController = Get.put(OTPTimerController());
+  State<OtpScreen> createState() => _OtpScreenState();
+}
+
+class _OtpScreenState extends State<OtpScreen> {
+  final SubmitFormController controller = Get.find<SubmitFormController>();
+  late final OTPTimerController otpTimerController;
+  late final TextEditingController pinController;
+  late final FocusNode focusNode;
+
+  @override
+  void initState() {
+    super.initState();
+    otpTimerController = Get.put(OTPTimerController());
+    pinController = TextEditingController();
+    focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    pinController.dispose();
+    focusNode.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,10 +49,7 @@ class OtpScreen extends GetView<SubmitFormController> {
               sizedBoxHeight(50),
               const Text(
                 'Enter OTP to verify',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
               sizedBoxHeight(20),
               Text('An OTP has been sent to ${controller.diltuPhoneNo.text}'),
@@ -37,36 +58,37 @@ class OtpScreen extends GetView<SubmitFormController> {
                 child: Pinput(
                   length: 4,
                   showCursor: true,
-                  onCompleted: (otp) {
-                    controller.verifyOtp(() {
-                      showLoader(context);
-                    }, (String message) {
-                      hideLoader();
-                      mySnackBar(message, const Icon(Icons.check));
-                      controller.submitForm(() {
-                        showLoader(context);
-                      }, (String message, String? applicationNo) {
+                  controller: pinController,
+                  focusNode: focusNode,
+                  onCompleted: (otp) async {
+                    var response = await controller.verifyOtp(otp);
+                    showLoader(context);
+                    if (response['success']) {
+                      mySnackBar(response['message'], const Icon(Icons.check));
+                      var res = await controller.submitForm();
+                      if (res['success']) {
                         hideLoader();
+                        mySnackBar(res['message'], const Icon(Icons.check));
                         Get.offAllNamed(
                           '/success-screen',
-                          arguments: [
-                            applicationNo,
-                          ],
+                          arguments: [res['applicationNo']],
                         );
-                      }, (String message) {
+                      } else {
                         hideLoader();
-                        mySnackBar(message, const Icon(Icons.warning));
-                      });
-                    }, (String message) {
+                        mySnackBar(res['message'], const Icon(Icons.warning));
+                      }
+                    } else {
                       hideLoader();
-                      mySnackBar(message, const Icon(Icons.warning));
-                    }, otp);
+                      mySnackBar(response['message'], const Icon(Icons.warning));
+                    }
                   },
                   defaultPinTheme: PinTheme(
                     width: 56,
                     height: 56,
                     textStyle: const TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.bold),
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.blue),
                       borderRadius: BorderRadius.circular(10),
@@ -86,23 +108,26 @@ class OtpScreen extends GetView<SubmitFormController> {
                       ),
                       TextButton(
                         onPressed: () {
-                          otpTimerController.timeLeft.value == 0
-                              ? otpTimerController.resetTimer
-                              : null;
+                          if (otpTimerController.timeLeft.value == 0) {
+                            otpTimerController.resetTimer();
+                          }
                         },
                         child: const Text('Resend'),
                       ),
                     ],
                   ),
-                  Obx(() => Text(
-                        "${otpTimerController.timeLeft.value ~/ 60}:${(otpTimerController.timeLeft.value % 60).toString().padLeft(2, '0')}",
-                        style: const TextStyle(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.red),
-                      )),
+                  Obx(
+                    () => Text(
+                      "${otpTimerController.timeLeft.value ~/ 60}:${(otpTimerController.timeLeft.value % 60).toString().padLeft(2, '0')}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
                 ],
-              )
+              ),
             ],
           ),
         ),

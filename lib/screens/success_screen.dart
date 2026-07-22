@@ -23,7 +23,8 @@ class SuccessScreen extends StatelessWidget {
                   image: AssetImage('images/success.png'),
                 ),
                 const Text(
-                    'I ruang phurh dilna hlawhtling taka thehluh a ni e'),
+                  'I ruang phurh dilna hlawhtling taka thehluh a ni e',
+                ),
                 sizedBoxHeight(30),
                 const Text('Dilna ID'),
                 Text(

@@ -134,4 +134,13 @@ class FirstStepServices extends BaseService {
       return Future.error(ex);
     }
   }
+
+  Future getBoatRoutes() async {
+    try {
+      var response = await client.get(Routes.GET_BOAT_ROUTES);
+      return response;
+    } catch (ex) {
+      return Future.error(ex);
+    }
+  }
 }

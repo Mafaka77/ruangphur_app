@@ -26,10 +26,7 @@ class DrawerScreen extends GetView<HomeController> {
                     onPressed: () {
                       Get.back();
                     },
-                    icon: const Icon(
-                      Icons.clear,
-                      color: Colors.white,
-                    ),
+                    icon: const Icon(Icons.clear, color: Colors.white),
                   ),
                 ),
                 sizedBoxHeight(50),
@@ -46,14 +43,18 @@ class DrawerScreen extends GetView<HomeController> {
                 ListTile(
                   dense: true,
                   onTap: () {
-                    controller.getAllDownloads(() {
-                      showLoader(context);
-                    }, () {
-                      hideLoader();
-                      Get.toNamed('/download-screen');
-                    }, () {
-                      hideLoader();
-                    });
+                    controller.getAllDownloads(
+                      () {
+                        showLoader(context);
+                      },
+                      () {
+                        hideLoader();
+                        Get.toNamed('/download-screen');
+                      },
+                      () {
+                        hideLoader();
+                      },
+                    );
                   },
                   tileColor: MyColors.stepperBackgroundColor,
                   title: const Text('Downloads'),
@@ -81,6 +82,7 @@ class DrawerScreen extends GetView<HomeController> {
                 ),
                 sizedBoxHeight(10),
                 ListTile(
+                  onTap: () => Get.toNamed('/contact-us-screen'),
                   dense: true,
                   tileColor: MyColors.stepperBackgroundColor,
                   title: const Text('Contact Us'),
@@ -105,15 +107,13 @@ class DrawerScreen extends GetView<HomeController> {
                 image: AssetImage('images/msegslogo.png'),
               ),
             ),
-            Center(
-              child: Text('Crafted with care by'),
-            ),
+            Center(child: Text('Crafted with care by')),
             Center(
               child: AutoSizeText(
                 ' Mizoram State e-Governance Society (MSeGS)',
                 maxFontSize: 16,
               ),
-            )
+            ),
           ],
         ),
       ),
